@@ -69,18 +69,50 @@
     <div class="background-svg"></div>
     <div class="container">
       <h1>UPI/QR Payment Details</h1>
-      <p>Please select the payment method:</p>
-      <img
-        src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=YourDataHere"
-        alt="QR Code"
-        class="qr-code"
-      />
-      <p>Or enter UPI ID:</p>
-      <input type="text" id="upi-id" name="upi-id" placeholder="Enter UPI ID" />
-      <input type="submit" value="Proceed" />
+      <form id="upi-form">
+        <p>Please enter your UPI ID here:</p>
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=YourDataHere"
+          alt="QR Code"
+          class="qr-code"
+        />
+        <p>Or enter UPI ID:</p>
+        <input
+          type="text"
+          id="upi-id"
+          name="upi-id"
+          placeholder="Enter UPI ID"
+        />
+        <input type="button" value="Proceed" onclick="submitUPI()" />
+      </form>
     </div>
-    <script src="script_upi.js">
-      
+
+    <script>
+                  function submitUPI() {
+        const upiId = document.getElementById("upi-id").value;
+
+        
+        console.log("Entered UPI ID:", upiId);
+
+        
+        fetch("http://localhost:3000/submit-upi", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ upi_id: upiId }), 
+        })
+        .then((response) => response.text())
+        .then((data) => {
+          
+          alert(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      }
     </script>
+    
+    <span id="proceed-feedback"></span>
   </body>
 </html>
