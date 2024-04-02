@@ -69,6 +69,13 @@
         to verify and make the payment:
       </p>
       <form id="wallet-payment-form" onsubmit="return submitForm()">
+        <input
+          type="text"
+          id="wallet-username"
+          name="wallet-username"
+          placeholder="Enter your wallet username or ID"
+          required
+        />
         <select id="wallet" name="wallet" required>
           <option value="" disabled selected>Select your wallet</option>
           <option value="paypal">PayPal</option>

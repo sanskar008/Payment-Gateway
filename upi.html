@@ -88,12 +88,9 @@
     </div>
 
     <script>
-                  function submitUPI() {
+        function submitUPI() {
         const upiId = document.getElementById("upi-id").value;
-
-        
         console.log("Entered UPI ID:", upiId);
-
         
         fetch("http://localhost:3000/submit-upi", {
           method: "POST",
