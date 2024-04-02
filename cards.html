@@ -74,7 +74,7 @@
     <div class="container">
       <h1>Card Payment Details</h1>
       <p>Please enter your card details below:</p>
-      <form id="card-payment-form" onsubmit="return validateForm()">
+      <form id="card-payment-form" onsubmit="return submitCardPayment(event)">
         <input
           type="text"
           id="card-holder-name"
@@ -101,9 +101,34 @@
         <p class="error-message" id="error-message"></p>
       </form>
     </div>
-    <script src="script_cards.js">
-     
-      
+    <script>
+      function submitCardPayment(event) {
+        event.preventDefault();
+
+        const cardHolderName =
+          document.getElementById("card-holder-name").value;
+        const cardNumber = document.getElementById("card-number").value;
+        const expiryDate = document.getElementById("expiry-date").value;
+        const cvv = document.getElementById("cvv").value;
+
+        fetch("http://localhost:3000/submit-card-payment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ cardHolderName, cardNumber, expiryDate, cvv }),
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            console.log(data);
+
+            alert(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred while submitting card payment.");
+          });
+      }
     </script>
   </body>
 </html>

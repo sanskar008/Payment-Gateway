@@ -1,47 +1,63 @@
-var mysql = require("mysql");
+const express = require("express");
+const bodyParser = require("body-parser");
+const mysql = require("mysql");
+const cors = require("cors");
 
-var con = mysql.createConnection({
+const app = express();
+const port = 3000;
+
+app.use(bodyParser.json());
+app.use(cors()); 
+
+const connection = mysql.createConnection({
   host: "localhost",
   user: "sanskar",
   password: "sanskar008",
+  database: "database_cards",
 });
 
-con.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected!");
+connection.connect((err) => {
+  if (err) {
+    console.error("Error connecting to database:", err);
+    return;
+  }
+  console.log("Connected to database!");
 });
 
-function validateForm() {
-  var cardHolderName = document.getElementById("card-holder-name").value;
-  var cardNumber = document.getElementById("card-number").value;
-  var expiryDate = document.getElementById("expiry-date").value;
-  var cvv = document.getElementById("cvv").value;
+app.post("/submit-card-payment", (req, res) => {
+  const cardHolderName = req.body.cardHolderName;
+  const cardNumber = req.body.cardNumber;
+  const expiryDate = req.body.expiryDate;
+  const cvv = req.body.cvv;
 
-  var errorMessage = "";
+  console.log("Card Holder Name:", cardHolderName);
+  console.log("Card Number:", cardNumber);
+  console.log("Expiry Date:", expiryDate);
+  console.log("CVV:", cvv);
 
-  if (
-    cardHolderName === "" ||
-    cardNumber === "" ||
-    expiryDate === "" ||
-    cvv === ""
-  ) {
-    errorMessage = "All fields are required.";
-  } else if (!/^[a-zA-Z ]+$/.test(cardHolderName)) {
-    errorMessage = "Invalid card holder name.";
-  } else if (!/^\d{16}$/.test(cardNumber)) {
-    errorMessage = "Invalid card number. Must be 16 digits.";
-  } else if (!/^\d{2}\/\d{4}$/.test(expiryDate)) {
-    errorMessage = "Invalid expiry date. Must be in MM/YYYY format.";
-  } else if (!/^\d{3}$/.test(cvv)) {
-    errorMessage = "Invalid CVV. Must be 3 digits.";
-  }
+  connection.query(
+    "INSERT INTO card_payments (card_holder_name, card_number, expiry_date, cvv) VALUES (?, ?, ?, ?)",
+    [cardHolderName, cardNumber, expiryDate, cvv],
+    (error, results, fields) => {
+      if (error) {
+        console.error(
+          "Error inserting card payment details into database:",
+          error
+        );
+        res
+          .status(500)
+          .send("Error inserting card payment details into database");
+        return;
+      }
 
-  if (errorMessage !== "") {
-    document.getElementById("error-message").innerText = errorMessage;
-    return false;
-  }
+      console.log("Card payment details inserted successfully:", results);
 
-  // Proceed with payment
-  alert("Payment successful!");
-  return true;
-}
+      const message = `Card Holder Name: ${cardHolderName}\nCard Number: ${cardNumber}\nExpiry Date: ${expiryDate}\nCVV: ${cvv}`;
+      res.send(message);
+    }
+  );
+});
+
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
+});
