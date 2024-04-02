@@ -88,28 +88,27 @@
     </div>
 
     <script>
-        function submitUPI() {
+      function submitUPI() {
         const upiId = document.getElementById("upi-id").value;
         console.log("Entered UPI ID:", upiId);
-        
+
         fetch("http://localhost:3000/submit-upi", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ upi_id: upiId }), 
+          body: JSON.stringify({ upi_id: upiId }),
         })
-        .then((response) => response.text())
-        .then((data) => {
-          
-          alert(data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+          .then((response) => response.text())
+          .then((data) => {
+            alert(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
       }
     </script>
-    
+
     <span id="proceed-feedback"></span>
   </body>
 </html>

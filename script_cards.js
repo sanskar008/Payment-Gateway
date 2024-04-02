@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
-app.use(cors()); 
+app.use(cors());
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -30,30 +30,26 @@ app.post("/submit-card-payment", (req, res) => {
   const expiryDate = req.body.expiryDate;
   const cvv = req.body.cvv;
 
-  console.log("Card Holder Name:", cardHolderName);
-  console.log("Card Number:", cardNumber);
-  console.log("Expiry Date:", expiryDate);
-  console.log("CVV:", cvv);
-
+  // Check if the card details exist in the database
   connection.query(
-    "INSERT INTO card_payments (card_holder_name, card_number, expiry_date, cvv) VALUES (?, ?, ?, ?)",
+    "SELECT * FROM card_payments WHERE card_holder_name = ? AND card_number = ? AND expiry_date = ? AND cvv = ?",
     [cardHolderName, cardNumber, expiryDate, cvv],
     (error, results, fields) => {
       if (error) {
-        console.error(
-          "Error inserting card payment details into database:",
-          error
-        );
-        res
-          .status(500)
-          .send("Error inserting card payment details into database");
+        console.error("Error querying database:", error);
+        res.status(500).send("An error occurred while processing payment");
         return;
       }
 
-      console.log("Card payment details inserted successfully:", results);
-
-      const message = `Card Holder Name: ${cardHolderName}\nCard Number: ${cardNumber}\nExpiry Date: ${expiryDate}\nCVV: ${cvv}`;
-      res.send(message);
+      if (results.length > 0) {
+        // Payment successful
+        console.log("Payment completed");
+        res.send("Payment completed");
+      } else {
+        // Payment failed
+        console.log("Payment failed");
+        res.status(400).send("Payment failed");
+      }
     }
   );
 });

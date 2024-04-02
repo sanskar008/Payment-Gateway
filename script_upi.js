@@ -20,20 +20,24 @@ connection.connect();
 app.post("/submit-upi", (req, res) => {
   const upi_id = req.body.upi_id;
 
-  console.log("Received UPI ID:", upi_id);
-
   connection.query(
-    "INSERT INTO upi_payments (upi_id) VALUES (?)",
+    "SELECT * FROM upi_payments WHERE upi_id = ?",
     [upi_id],
     (error, results, fields) => {
       if (error) {
-        console.error("Error inserting UPI ID into database:", error);
-        return res.status(500).send("Error inserting UPI ID into database");
+        console.error("Error querying database:", error);
+        return res
+          .status(500)
+          .send("An error occurred while processing UPI ID");
       }
 
-      console.log("UPI ID inserted successfully:", upi_id);
-
-      res.send("UPI ID inserted successfully");
+      if (results.length > 0) {
+        console.log("Payment successful for UPI ID:", upi_id);
+        res.send("Payment successful");
+      } else {
+        console.log("Payment failed for UPI ID:", upi_id);
+        res.status(400).send("Payment failed");
+      }
     }
   );
 });
