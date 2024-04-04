@@ -4,72 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Payment Gateway</title>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
         background-color: #f5f5f5;
-      }
-
-      .container {
-        max-width: 500px;
-        margin: 50px auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-      }
-
-      h1,
-      h2 {
-        text-align: center;
-        color: #333;
-      }
-
-      .company-name {
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-
-      .amount {
-        font-size: 20px;
-        margin-bottom: 30px;
-      }
-
-      .payment-methods {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-      }
-
-      .payment-method {
-        flex: 1;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: box-shadow 0.3s, transform 0.3s;
-        margin-bottom: 20px;
-      }
-
-      .payment-method:hover {
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-        transform: translateY(-5px);
-      }
-
-      .payment-method img {
-        margin-bottom: 10px;
-        width: 50px;
-        height: 50px;
-      }
-
-      .payment-method p {
-        margin: 0;
-        color: #555;
       }
 
       .background-svg {
@@ -79,18 +19,83 @@
         width: 100%;
         height: 100%;
         z-index: -1;
-        background-image: url("https://images.unsplash.com/photo-1564135624576-c5c88640f235?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+        background-image: url("img6.jpg");
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+      }
+
+      .header {
+        text-align: center;
+        padding: 20px;
+        background-color: rgba(0, 123, 255, 0);
+        color: #fff;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 32px;
+      }
+
+      .header h2 {
+        margin: 10px 0;
+        font-size: 24px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: rgba(255, 255, 255, 0);
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .payment-methods {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .payment-method {
+        flex: 1 1 200px;
+        background-color: #f9f9f9;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: box-shadow 0.3s, transform 0.3s;
+        margin: 10px;
+        max-width: 200px;
+      }
+
+      .payment-method:hover {
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+        transform: translateY(-5px);
+      }
+
+      .payment-method img {
+        margin-bottom: 15px;
+        width: 70px;
+        height: 70px;
+      }
+
+      .payment-method p {
+        margin: 0;
+        color: #666;
+        font-size: 18px;
       }
     </style>
   </head>
   <body>
     <div class="background-svg"></div>
+    <header class="header">
+      <h1>PayDash</h1>
+      <h2>Amount to be Paid: ₹10,000</h2>
+    </header>
     <div class="container">
-      <h1 class="company-name">Intigeners Pvt. Ltd.</h1>
-      <h2 class="amount">Amount to be Paid: ₹10000</h2>
       <div class="payment-methods">
         <div class="payment-method" onclick="selectPayment('cards')">
           <img

@@ -30,7 +30,6 @@ app.post("/submit-card-payment", (req, res) => {
   const expiryDate = req.body.expiryDate;
   const cvv = req.body.cvv;
 
-  // Check if the card details exist in the database
   connection.query(
     "SELECT * FROM card_payments WHERE card_holder_name = ? AND card_number = ? AND expiry_date = ? AND cvv = ?",
     [cardHolderName, cardNumber, expiryDate, cvv],
@@ -42,11 +41,9 @@ app.post("/submit-card-payment", (req, res) => {
       }
 
       if (results.length > 0) {
-        // Payment successful
         console.log("Payment completed");
         res.send("Payment completed");
       } else {
-        // Payment failed
         console.log("Payment failed");
         res.status(400).send("Payment failed");
       }
